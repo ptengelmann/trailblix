@@ -6,26 +6,28 @@ console.log('MongoDB URI:', process.env.MONGO_URI); // Add this line to check if
 
 const app = express();
 
-// Update CORS settings to allow your Netlify domain
+// Configure CORS
 const corsOptions = {
-    origin: 'https://66e898aa5e1644218734b7c0--verdant-malasada-8d5370.netlify.app', // Netlify domain
-    optionsSuccessStatus: 200, // For legacy browser support
+    origin: 'https://verdant-malasada-8d5370.netlify.app', // Your Netlify URL (exact origin)
+    methods: ['GET', 'POST'], // Specify allowed methods (GET, POST, etc.)
+    allowedHeaders: ['Content-Type'], // Specify allowed headers (Content-Type, Authorization, etc.)
+    optionsSuccessStatus: 200, // Some browsers require a success status for legacy reasons
   };
-
-// Middleware
-app.use(cors(corsOptions));
-app.use(cors());
-app.use(express.json());
-
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log('MongoDB Connected'))
-    .catch((err) => console.log(err));
-
-// Routes
-app.use('/api/profile', require('./routes/profileRoutes')); // User profile routes
-
-// Start the server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+  
+  // Use CORS middleware with options
+  app.use(cors(corsOptions));
+  
+  // Parse JSON requests (to handle form data submissions)
+  app.use(express.json());
+  
+  // Your routes
+  app.post('/api/profile', (req, res) => {
+    // Your logic for handling profile creation
+    res.status(200).json({ message: 'Profile submitted successfully!' });
+  });
+  
+  // Start server
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-});
+  });
