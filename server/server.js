@@ -9,7 +9,7 @@ const app = express();
 
 // CORS configuration
 const corsOptions = {
-  origin: 'https://verdant-malasada-8d5370.netlify.app', // Ensure this is the correct Netlify URL
+  origin: 'https://trailblix.netlify.app', // Ensure this is the correct Netlify URL
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow more HTTP methods
   allowedHeaders: ['Content-Type', 'Authorization'], // Allow any necessary headers
   credentials: true, // Enable this if you're using authentication (e.g., cookies)
