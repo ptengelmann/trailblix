@@ -8,7 +8,7 @@ const app = express();
 
 // Update CORS settings to allow your Netlify domain
 const corsOptions = {
-    origin: 'https://66e898aa5e1644218734b7c0--verdant-malasada-8d5370.netlify.app', // Replace this with your actual Netlify URL
+    origin: 'https://66e898aa5e1644218734b7c0--verdant-malasada-8d5370.netlify.app', // Netlify domain
     optionsSuccessStatus: 200, // For legacy browser support
   };
 
