@@ -16,6 +16,13 @@ const corsOptions = {
   optionsSuccessStatus: 200, // For legacy browser support
 };
 
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true, // This might not be needed for the latest version of Mongoose
+    useUnifiedTopology: true // This also may be optional in the latest Mongoose versions
+  })
+  .then(() => console.log('MongoDB Connected'))
+  .catch(err => console.log(err));
+
 // Apply CORS middleware
 app.use(cors(corsOptions));
 
