@@ -5,25 +5,30 @@ require('dotenv').config({ path: './server/.env' });
 
 const app = express();
 
+// Configure CORS
 const corsOptions = {
-    origin: ['https://trailblix.netlify.app', 'http://localhost:3000'], // Allow your Netlify app and localhost
-    methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true, // Optional, if you're working with cookies or auth headers
+    origin: 'https://trailblix.netlify.app', // Your Netlify URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Specify allowed headers
+    credentials: true, // Allow credentials if needed
 };
+
 app.use(cors(corsOptions));
 
+// Parse JSON requests
 app.use(express.json());
 
+// Example route for profile creation
 app.post('/api/profile', (req, res) => {
-    const { name, education, skills, interests } = req.body;
-    if (!name || !education || !skills || !interests) {
-        return res.status(400).json({ error: 'All fields are required' });
-    }
-    // Implement logic to save profile (for now just respond with success)
     res.status(200).json({ message: 'Profile submitted successfully!' });
 });
 
+// Add this route to handle the root URL
+app.get('/', (req, res) => {
+    res.send('Welcome to Trailblix API!');
+});
+
+// Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
