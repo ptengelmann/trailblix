@@ -13,6 +13,7 @@ const corsOptions = {
     credentials: true, // Allow credentials if needed
 };
 
+// Use the CORS middleware with the proper options
 app.use(cors(corsOptions));
 
 // Parse JSON requests
@@ -23,7 +24,7 @@ app.post('/api/profile', (req, res) => {
     res.status(200).json({ message: 'Profile submitted successfully!' });
 });
 
-// Add this route to handle the root URL
+// Add a basic route to handle the root URL
 app.get('/', (req, res) => {
     res.send('Welcome to Trailblix API!');
 });
