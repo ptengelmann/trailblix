@@ -1,93 +1,54 @@
-import React from 'react';
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
-import { Box, Button, TextField, Typography, Tooltip } from '@mui/material';
-import { keyframes } from '@mui/system';
-
-// Keyframes for button hover effect
-const pulseEffect = keyframes`
-  0% {
-    box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4);
-  }
-  70% {
-    box-shadow: 0 0 0 30px rgba(46, 204, 113, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
-  }
-`;
+import React, { useState } from 'react';
+import { Box, Button, TextField, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
-  const handleGoogleSignupSuccess = (response) => {
-    console.log('Google signup success:', response);
-    // Handle the successful Google signup response
-    // e.g., send the token to your backend server for verification and user creation
+  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const [error, setError] = useState('');
+  const [successDialog, setSuccessDialog] = useState(false);
+  const navigate = useNavigate();
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleGoogleSignupFailure = (error) => {
-    console.error('Google signup failed:', error);
-    alert('Google signup failed.');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post('http://localhost:5000/api/signup', formData);
+      setSuccessDialog(true); // Show success dialog
+    } catch (error) {
+      setError('Sign up failed. Try again.');
+    }
+  };
+
+  const handleDialogClose = () => {
+    setSuccessDialog(false);
+    navigate('/login'); // Redirect to login after closing the dialog
   };
 
   return (
-    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-      <Box
-        sx={{
-          padding: 4,
-          maxWidth: 500,
-          margin: 'auto',
-          textAlign: 'center',
-          backgroundColor: '#f4f4f4', // light background to match modern theme
-          borderRadius: 2,
-          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-        }}
-      >
-        <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', color: '#2C3E50' }}>
-          Sign Up
-        </Typography>
+    <Box sx={{ padding: 4, maxWidth: 500, margin: 'auto', textAlign: 'center' }}>
+      <Typography variant="h4" gutterBottom>Sign Up</Typography>
+      <TextField label="Name" name="name" onChange={handleInputChange} fullWidth margin="normal" />
+      <TextField label="Email" name="email" onChange={handleInputChange} fullWidth margin="normal" />
+      <TextField label="Password" name="password" type="password" onChange={handleInputChange} fullWidth margin="normal" />
+      {error && <Typography color="error">{error}</Typography>}
+      <Button variant="contained" color="primary" onClick={handleSubmit}>Sign Up</Button>
 
-        <Box sx={{ marginBottom: 3 }}>
-          <TextField label="Name" variant="outlined" fullWidth />
-        </Box>
-        <Box sx={{ marginBottom: 3 }}>
-          <TextField label="Email" variant="outlined" fullWidth />
-        </Box>
-        <Box sx={{ marginBottom: 3 }}>
-          <TextField label="Password" type="password" variant="outlined" fullWidth />
-        </Box>
-
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{
-            marginBottom: 3,
-            backgroundColor: '#2ecc71',
-            padding: '10px 20px',
-            fontSize: '16px',
-            animation: `${pulseEffect} 2s infinite`,
-            '&:hover': {
-              backgroundColor: '#27ae60',
-              transform: 'scale(1.05)',
-            },
-            transition: 'transform 0.3s ease-in-out',
-          }}
-        >
-          Sign Up
-        </Button>
-
-        <Typography variant="h6" sx={{ marginBottom: 2, color: '#2C3E50' }}>Or Sign Up with</Typography>
-
-        {/* Google Sign Up Button */}
-        <Tooltip title="Sign up using your Google account" arrow>
-          <Box sx={{ marginBottom: 2 }}>
-            <GoogleLogin
-              onSuccess={handleGoogleSignupSuccess}
-              onError={handleGoogleSignupFailure}
-              useOneTap
-            />
-          </Box>
-        </Tooltip>
-      </Box>
-    </GoogleOAuthProvider>
+      {/* Success Dialog */}
+      <Dialog open={successDialog} onClose={handleDialogClose}>
+        <DialogTitle>Sign Up Successful</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Your account has been created successfully. Please log in to continue.</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose} color="primary">Go to Login</Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
   );
 };
 

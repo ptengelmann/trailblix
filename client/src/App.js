@@ -9,6 +9,8 @@ import Footer from './Footer';
 import Signup from './Signup';  // <-- New SignUp component
 import Login from './Login';    // <-- New Login component
 import CareerRecommendations from './CareerRecommendations';
+import MyProfile from './MyProfile'; // New component for profile
+
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
         <Route path="/signup" element={<Signup />} />  {/* <-- New SignUp Route */}
         <Route path="/login" element={<Login />} />    {/* <-- New Login Route */}
         <Route path="/careers" element={<CareerRecommendations />} /> {/* Ensure this route is added */}
+        <Route path="/my-profile" element={<MyProfile />} /> {/* Add this route */}
+
 
       </Routes>
     </Router>

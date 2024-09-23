@@ -4,21 +4,21 @@ const mongoose = require('mongoose');
 const ProfileSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   education: {
     type: String,
-    required: true
+    required: true,
   },
   skills: {
     type: [String],  // An array of skills
-    required: true
+    required: true,
   },
   interests: {
     type: [String],  // An array of interests
-    required: true
-  }
-});
+    required: true,
+  },
+}, { timestamps: true });  // Adds createdAt and updatedAt timestamps automatically
 
 // Create and export the Profile model
 module.exports = mongoose.model('Profile', ProfileSchema);

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, Button, Typography, Stepper, Step, StepLabel, TextField, Chip, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
 import { motion } from 'framer-motion'; // For modern animations
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // For navigation
 
 // Step components and categories
 const steps = ['Personal Info', 'Skills & Experience', 'Interests & Goals'];
@@ -25,6 +26,7 @@ const ProfileForm = () => {
     careerGoals: '',
   });
   const [selectedSkills, setSelectedSkills] = useState([]);
+  const navigate = useNavigate(); // Use for navigation
 
   // Handle step navigation
   const handleNext = () => {
@@ -52,12 +54,14 @@ const ProfileForm = () => {
     try {
       const profileData = { ...formData, skills: selectedSkills };
       console.log('Profile submitted:', profileData);
-      const response = await axios.post('https://api.example.com/profile', profileData);
+      const response = await axios.post('http://localhost:5000/api/profile', profileData); // Adjust to your backend URL
       if (response.status === 200) {
         alert('Profile successfully submitted!');
+        navigate('/dashboard'); // Navigate to the dashboard after submission
       }
     } catch (error) {
       console.error('Error submitting profile:', error);
+      alert('Failed to submit profile');
     }
   };
 

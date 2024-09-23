@@ -1,10 +1,11 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-require('dotenv').config(); // Ensure this is called to load .env without specifying the path unless necessary
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+require('dotenv').config();
 
 const app = express();
-console.log('Mongo URI:', process.env.MONGO_URI);
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
@@ -14,86 +15,96 @@ mongoose.connect(process.env.MONGO_URI, {
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.log('MongoDB connection error: ', err));
 
-// Define the Profile schema
-const ProfileSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  education: {
-    type: String,
-    required: true
-  },
-  skills: {
-    type: [String],  // Array of strings
-    required: true
-  },
-  interests: {
-    type: [String],  // Array of strings
-    required: true
-  }
+// User Schema for signup and login
+const UserSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true }
 });
 
-// Create the Profile model
-const Profile = mongoose.model('Profile', ProfileSchema);
+const User = mongoose.model('User', UserSchema);
 
-// Updated CORS settings to allow localhost:3000 and Netlify
-const corsOptions = {
-  origin: ['https://trailblix.netlify.app', 'http://localhost:3000'], // Add localhost:3000 for development
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-};
-
-// Use the CORS middleware
-app.use(cors(corsOptions));
-
-// Parse JSON requests
+// Middleware for CORS and JSON
+app.use(cors());
 app.use(express.json());
 
-// Handle preflight OPTIONS request for CORS
-app.options('*', cors(corsOptions));
+// JWT Secret
+const jwtSecret = process.env.JWT_SECRET || 'secretkey';
 
-// POST route for profile creation, saving the profile to MongoDB
-app.post('/api/profile', async (req, res) => {
+// Sign up route
+app.post('/api/signup', async (req, res) => {
   try {
-    const { name, education, skills, interests } = req.body;
+    const { name, email, password } = req.body;
 
-    // Create a new profile
-    const newProfile = new Profile({
-      name,
-      education,
-      skills: skills.split(',').map(skill => skill.trim()), // Convert skills to array
-      interests: interests.split(',').map(interest => interest.trim()) // Convert interests to array
-    });
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
 
-    // Save the profile to the database
-    await newProfile.save();
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    res.status(200).json({ message: 'Profile submitted successfully!' });
+    // Create new user
+    const newUser = new User({ name, email, password: hashedPassword });
+    await newUser.save();
+
+    // Create a JWT token
+    const token = jwt.sign({ userId: newUser._id }, jwtSecret, { expiresIn: '1h' });
+
+    res.status(201).json({ token, user: { name: newUser.name, email: newUser.email } });
   } catch (error) {
-    console.error('Error saving profile:', error);
-    res.status(500).json({ error: 'Failed to submit profile' });
+    console.error('Signup error:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
-// GET route for fetching all profiles from MongoDB
-app.get('/api/profile', async (req, res) => {
+// Login route
+app.post('/api/login', async (req, res) => {
   try {
-    const profiles = await Profile.find(); // Fetch all profiles from the database
-    res.status(200).json(profiles); // Send the profiles as response
+    const { email, password } = req.body;
+
+    // Check if the user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid email or password' });
+    }
+
+    // Check if the password matches
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid email or password' });
+    }
+
+    // Create a JWT token
+    const token = jwt.sign({ userId: user._id }, jwtSecret, { expiresIn: '1h' });
+
+    res.status(200).json({ token, user: { name: user.name, email: user.email } });
   } catch (error) {
-    console.error('Error fetching profiles:', error);
-    res.status(500).json({ error: 'Failed to fetch profiles' });
+    console.error('Login error:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
-// Basic route to ensure the API is running
-app.get('/', (req, res) => {
-  res.send('Welcome to Trailblix API!');
+// Middleware to protect routes
+const authenticateToken = (req, res, next) => {
+  const token = req.headers['authorization'];
+  if (!token) return res.status(401).json({ message: 'Access denied' });
+
+  try {
+    const decoded = jwt.verify(token, jwtSecret);
+    req.userId = decoded.userId;
+    next();
+  } catch (error) {
+    res.status(403).json({ message: 'Invalid token' });
+  }
+};
+
+// Protected route example (for profile or dashboard)
+app.get('/api/protected', authenticateToken, (req, res) => {
+  res.json({ message: 'Welcome to the protected route!' });
 });
 
-// Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
