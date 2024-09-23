@@ -24,6 +24,18 @@ const NavBar = () => {
         <ListItem button component={Link} to="/profile">
           <ListItemText primary="Profile" />
         </ListItem>
+        <ListItem button component={Link} to="/dashboard">
+          <ListItemText primary="Dashboard" />
+        </ListItem>
+        <ListItem button component={Link} to="/careers">
+          <ListItemText primary="Career Recommendations" />
+        </ListItem>
+        <ListItem button component={Link} to="/signup">
+          <ListItemText primary="Sign Up" />
+        </ListItem>
+        <ListItem button component={Link} to="/login">
+          <ListItemText primary="Login" />
+        </ListItem>
       </List>
     </Box>
   );
@@ -76,20 +88,75 @@ const NavBar = () => {
               Home
             </Button>
             <Button
-  color="inherit"
-  component={Link}
-  to="/profiles"
-  sx={{
-    fontSize: '16px',
-    color: '#333',
-    '&:hover': {
-      backgroundColor: '#E0E0E0',
-    },
-  }}
->
-  Profiles
-</Button>
-
+              color="inherit"
+              component={Link}
+              to="/profile"
+              sx={{
+                fontSize: '16px',
+                color: '#333',
+                '&:hover': {
+                  backgroundColor: '#E0E0E0',
+                },
+              }}
+            >
+              Profile
+            </Button>
+            <Button
+              color="inherit"
+              component={Link}
+              to="/dashboard"
+              sx={{
+                fontSize: '16px',
+                color: '#333',
+                '&:hover': {
+                  backgroundColor: '#E0E0E0',
+                },
+              }}
+            >
+              Dashboard
+            </Button>
+            <Button
+              color="inherit"
+              component={Link}
+              to="/careers"
+              sx={{
+                fontSize: '16px',
+                color: '#333',
+                '&:hover': {
+                  backgroundColor: '#E0E0E0',
+                },
+              }}
+            >
+              Career Recommendations
+            </Button>
+            <Button
+              color="inherit"
+              component={Link}
+              to="/signup"
+              sx={{
+                fontSize: '16px',
+                color: '#333',
+                '&:hover': {
+                  backgroundColor: '#E0E0E0',
+                },
+              }}
+            >
+              Sign Up
+            </Button>
+            <Button
+              color="inherit"
+              component={Link}
+              to="/login"
+              sx={{
+                fontSize: '16px',
+                color: '#333',
+                '&:hover': {
+                  backgroundColor: '#E0E0E0',
+                },
+              }}
+            >
+              Login
+            </Button>
           </Box>
 
           {/* Hamburger menu for small screens */}

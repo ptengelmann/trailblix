@@ -9,7 +9,12 @@ const ProfileList = () => {
   useEffect(() => {
     const fetchProfiles = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/profile');
+        // Check if we're in development or production, and set the base URL accordingly
+        const baseURL = process.env.NODE_ENV === 'development' 
+          ? 'http://localhost:5000' 
+          : 'https://trailblix-92c5c9f7b212.herokuapp.com';
+
+        const response = await axios.get(`${baseURL}/api/profile`);
         setProfiles(response.data);
       } catch (error) {
         console.error('Error fetching profiles:', error);
