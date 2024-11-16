@@ -70,7 +70,7 @@ build_image() {
 
 # Parse arguments
 engine="podman"
-image_name="node-dev"
+image_name="node-dev-attach"
 node_args=""
 dockerfile="../Dockerfile.dev"  # Default Dockerfile path
 
