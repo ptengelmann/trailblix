@@ -39,27 +39,6 @@ const Dropdown = styled.select`
     font-size: 1rem;
 `;
 
-const MultiSelect = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-`;
-
-const OptionCard = styled.div`
-    background-color: ${({ selected }) => (selected ? '#ff6b6b' : '#fff')};
-    color: ${({ selected }) => (selected ? '#fff' : '#000')};
-    border: 1px solid var(--gray-tone);
-    border-radius: 10px;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-
-    &:hover {
-        background-color: #ff8787;
-        color: #fff;
-    }
-`;
-
 const Button = styled.button`
     background-color: var(--bright-coral);
     color: var(--soft-white);
@@ -81,23 +60,16 @@ const ProfileCreationPage = () => {
         firstName: '',
         lastName: '',
         dateOfBirth: '',
-        careerField: '',
-        customField: '',
-        selectedSkills: [],
-        customSkill: ''
+        location: '',
+        currentRole: '',
+        desiredOutcome: '',
+        desiredNextStep: '',
+        skillGaps: '',
+        preferredRoleType: '',
+        skillTransferability: '',
+        newCareerInterest: '',
+        skillsAudit: ''
     });
-
-    const careerFields = ['Technology', 'Healthcare', 'Sales', 'Marketing', 'Zoology', 'Education', 'Other'];
-    const skills = ['JavaScript', 'Public Speaking', 'Data Analysis', 'Social Media Management', 'Animal Care', 'SEO Optimization', 'Other'];
-
-    const toggleSkillSelection = (skill) => {
-        setFormData((prevData) => ({
-            ...prevData,
-            selectedSkills: prevData.selectedSkills.includes(skill)
-                ? prevData.selectedSkills.filter((s) => s !== skill)
-                : [...prevData.selectedSkills, skill]
-        }));
-    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -109,16 +81,7 @@ const ProfileCreationPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const profileData = {
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            dateOfBirth: formData.dateOfBirth,
-            careerField: formData.careerField === 'Other' ? formData.customField : formData.careerField,
-            skills: formData.selectedSkills.includes('Other')
-                ? [...formData.selectedSkills.filter(skill => skill !== 'Other'), formData.customSkill]
-                : formData.selectedSkills
-        };
-        console.log('Profile Data:', profileData);
+        console.log('Profile Data:', formData);
         navigate('/profile-quiz');
     };
 
@@ -149,51 +112,97 @@ const ProfileCreationPage = () => {
                     onChange={handleChange}
                     required
                 />
+                <Input
+                    type="text"
+                    name="location"
+                    placeholder="Location"
+                    value={formData.location}
+                    onChange={handleChange}
+                    required
+                />
+                <Input
+                    type="text"
+                    name="currentRole"
+                    placeholder="Current Role"
+                    value={formData.currentRole}
+                    onChange={handleChange}
+                    required
+                />
 
-                <label htmlFor="career-field">Select Your Career Field:</label>
+                <label htmlFor="desiredOutcome">Desired Outcome:</label>
                 <Dropdown
-                    id="career-field"
-                    name="careerField"
-                    value={formData.careerField}
+                    id="desiredOutcome"
+                    name="desiredOutcome"
+                    value={formData.desiredOutcome}
                     onChange={handleChange}
                 >
                     <option value="">-- Select --</option>
-                    {careerFields.map((field) => (
-                        <option key={field} value={field}>
-                            {field}
-                        </option>
-                    ))}
+                    <option value="Career Progression">Career Progression</option>
+                    <option value="Change Within The Same Field">Change Within The Same Field</option>
+                    <option value="Complete Change">Complete Change</option>
                 </Dropdown>
-                {formData.careerField === 'Other' && (
-                    <Input
-                        type="text"
-                        name="customField"
-                        placeholder="Please specify your career field"
-                        value={formData.customField}
-                        onChange={handleChange}
-                    />
+
+                {formData.desiredOutcome === 'Career Progression' && (
+                    <>
+                        <label htmlFor="desiredNextStep">Desired Next Step:</label>
+                        <Dropdown
+                            id="desiredNextStep"
+                            name="desiredNextStep"
+                            value={formData.desiredNextStep}
+                            onChange={handleChange}
+                        >
+                            <option value="">-- Select --</option>
+                            <option value="Specialization">Specialization</option>
+                            <option value="Leadership">Leadership</option>
+                            <option value="Expanded Skills">Expanded Skills</option>
+                        </Dropdown>
+
+                        <Input
+                            type="text"
+                            name="skillGaps"
+                            placeholder="Specific skills or certs you are interested in"
+                            value={formData.skillGaps}
+                            onChange={handleChange}
+                        />
+                    </>
                 )}
 
-                <h2>Select Your Skills:</h2>
-                <MultiSelect>
-                    {skills.map((skill) => (
-                        <OptionCard
-                            key={skill}
-                            selected={formData.selectedSkills.includes(skill)}
-                            onClick={() => toggleSkillSelection(skill)}
-                        >
-                            {skill}
-                        </OptionCard>
-                    ))}
-                </MultiSelect>
-                {formData.selectedSkills.includes('Other') && (
-                    <Input
-                        type="text"
-                        name="customSkill"
-                        placeholder="Please specify your skill"
-                        value={formData.customSkill}
-                        onChange={handleChange}
-                    />
+                {formData.desiredOutcome === 'Change Within The Same Field' && (
+                    <>
+                        <Input
+                            type="text"
+                            name="preferredRoleType"
+                            placeholder="Preferred Role Type (e.g., transitioning to...)"
+                            value={formData.preferredRoleType}
+                            onChange={handleChange}
+                        />
+                        <Input
+                            type="text"
+                            name="skillTransferability"
+                            placeholder="Current skills that can be leveraged"
+                            value={formData.skillTransferability}
+                            onChange={handleChange}
+                        />
+                    </>
+                )}
+
+                {formData.desiredOutcome === 'Complete Change' && (
+                    <>
+                        <Input
+                            type="text"
+                            name="newCareerInterest"
+                            placeholder="New Career Interest"
+                            value={formData.newCareerInterest}
+                            onChange={handleChange}
+                        />
+                        <Input
+                            type="text"
+                            name="skillsAudit"
+                            placeholder="Current skills you have"
+                            value={formData.skillsAudit}
+                            onChange={handleChange}
+                        />
+                    </>
                 )}
 
                 <Button type="submit">Save and Continue</Button>

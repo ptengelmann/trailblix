@@ -1,7 +1,6 @@
 import React from 'react';
-import { NavLink as RouterLink, useNavigate } from 'react-router-dom';
+import { NavLink as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { useAuth } from '../AuthContext.js';
 
 const HeaderWrapper = styled.header`
     display: flex;
@@ -50,40 +49,18 @@ const CTAButton = styled.button`
 `;
 
 const Header = () => {
-    const { user, logout } = useAuth();
-    const navigate = useNavigate();
-
-    const handleGetStartedClick = () => {
-        if (!user) {
-            navigate('/profile-creation');
-        }
-    };
-
     return (
         <HeaderWrapper>
             <RouterLink to="/">
                 <img src="../assets/logo.png" alt="Trailblix Logo" style={{ height: '40px' }} />
             </RouterLink>
             <NavLinks>
-                {!user ? (
-                    <>
-                        <NavLink to="/">Home</NavLink>
-                        <NavLink to="/about">About Us</NavLink>
-                        <NavLink to="/pricing">Pricing</NavLink>
-                        <NavLink to="/blog">Blog</NavLink>
-                        <NavLink to="/login">Login</NavLink>
-                        <CTAButton onClick={handleGetStartedClick}>Get Started</CTAButton>
-                    </>
-                ) : (
-                    <>
-                        <NavLink to="/dashboard">Dashboard</NavLink>
-                        <NavLink to="/job-suggestions">Job Suggestions</NavLink>
-                        <NavLink to="/learning-paths">Learning Paths</NavLink>
-                        <NavLink to="/profile">Profile</NavLink>
-                        <NavLink to="/settings">Settings</NavLink>
-                        <CTAButton onClick={logout}>Logout</CTAButton>
-                    </>
-                )}
+                <NavLink to="/">Home</NavLink>
+                <NavLink to="/about">About Us</NavLink>
+                <NavLink to="/pricing">Pricing</NavLink>
+                <NavLink to="/blog">Blog</NavLink>
+                <NavLink to="/login">Login</NavLink>
+                <CTAButton onClick={() => window.location.href = "/profile-creation"}>Get Started</CTAButton> {/* Redirects to profile creation page */}
             </NavLinks>
         </HeaderWrapper>
     );

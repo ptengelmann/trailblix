@@ -15,14 +15,26 @@ const floatAnimation = keyframes`
 
 const FeaturesSection = styled.section`
     display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
     padding: 4rem 2rem;
     background: linear-gradient(135deg, var(--deep-blue) 30%, var(--light-pink) 100%);
-    position: relative;
-    overflow: hidden;
     text-align: center;
     color: var(--soft-white);
+`;
+
+const SectionHeadline = styled.h2`
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: var(--soft-white);
+`;
+
+const FeaturesGrid = styled.div`
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    width: 100%;
 `;
 
 const Card = styled.div`
@@ -63,42 +75,45 @@ const CardDescription = styled.p`
 
 const FeaturesOverview = () => (
     <FeaturesSection>
-        <Card>
-            <IconWrapper>
-                <FontAwesomeIcon icon={faUserCircle} />
-            </IconWrapper>
-            <CardTitle>Create a Profile</CardTitle>
-            <CardDescription>
-                Build your career profile and let our AI analyze your strengths.
-            </CardDescription>
-        </Card>
-        <Card>
-            <IconWrapper>
-                <FontAwesomeIcon icon={faBrain} />
-            </IconWrapper>
-            <CardTitle>AI Career Matches</CardTitle>
-            <CardDescription>
-                Get tailored career suggestions based on your skills and goals.
-            </CardDescription>
-        </Card>
-        <Card>
-            <IconWrapper>
-                <FontAwesomeIcon icon={faBook} />
-            </IconWrapper>
-            <CardTitle>Explore Learning Paths</CardTitle>
-            <CardDescription>
-                Discover courses and resources to bridge your skill gaps.
-            </CardDescription>
-        </Card>
-        <Card>
-            <IconWrapper>
-                <FontAwesomeIcon icon={faBriefcase} />
-            </IconWrapper>
-            <CardTitle>Apply for Jobs</CardTitle>
-            <CardDescription>
-                Find job opportunities that match your ideal career path.
-            </CardDescription>
-        </Card>
+        <SectionHeadline>How Trailblix Works</SectionHeadline>
+        <FeaturesGrid>
+            <Card>
+                <IconWrapper>
+                    <FontAwesomeIcon icon={faUserCircle} />
+                </IconWrapper>
+                <CardTitle>Create Your Profile</CardTitle>
+                <CardDescription>
+                    Build your career profile and let our AI analyze your strengths.
+                </CardDescription>
+            </Card>
+            <Card>
+                <IconWrapper>
+                    <FontAwesomeIcon icon={faBrain} />
+                </IconWrapper>
+                <CardTitle>Get AI-Driven Career Matches</CardTitle>
+                <CardDescription>
+                    Receive tailored career suggestions based on your skills and goals.
+                </CardDescription>
+            </Card>
+            <Card>
+                <IconWrapper>
+                    <FontAwesomeIcon icon={faBook} />
+                </IconWrapper>
+                <CardTitle>Discover Learning Resources</CardTitle>
+                <CardDescription>
+                    Explore courses and resources to bridge your skill gaps.
+                </CardDescription>
+            </Card>
+            <Card>
+                <IconWrapper>
+                    <FontAwesomeIcon icon={faBriefcase} />
+                </IconWrapper>
+                <CardTitle>Explore Job Opportunities</CardTitle>
+                <CardDescription>
+                    Find job openings that align with your ideal career path.
+                </CardDescription>
+            </Card>
+        </FeaturesGrid>
     </FeaturesSection>
 );
 
