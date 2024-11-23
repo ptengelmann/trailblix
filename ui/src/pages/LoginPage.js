@@ -12,7 +12,7 @@ const LoginPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('https://your-backend-endpoint.com/oauth/token', {
+            const response = await fetch('https://user-management/oauth/login/token', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

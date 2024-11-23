@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Debugging: Print the initial arguments
+echo "Initial arguments: $@"
+
 # Color codes
 RED='\033[0;31m'
 YELLOW='\033[1;33m'
@@ -76,7 +79,14 @@ memory="8G"
 remove_existing=false
 remove_force=false
 
+# Display usage if no arguments are provided or --help is requested
+if [[ $# -eq 0 || "$1" == "--help" || "$1" == "-h" ]]; then
+    usage
+    exit 1
+fi
+
 while [[ $# -gt 0 ]]; do
+    echo "Processing argument: $1"
     case $1 in
         --engine|-e)
             engine="$2"
@@ -101,7 +111,7 @@ while [[ $# -gt 0 ]]; do
         --ports|-p)
             ports=("$2")
             shift 2
-            while [[ $1 != -* ]] && [[ $# -gt 0 ]]; do
+            while [[ $# -gt 0 && $1 != -* ]]; do
                 ports+=("$1")
                 shift
             done
@@ -121,8 +131,11 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Display usage if no arguments are provided or --help is requested
-if [[ $# -eq 0 || "$1" == "--help" || "$1" == "-h" || -z $podname || -z $hostname ]]; then
+# Debugging: Print the remaining arguments
+echo "Remaining arguments: $@"
+
+# Display usage if required arguments are missing
+if [[ -z "$podname" || -z "$hostname" ]]; then
     usage
     exit 1
 fi
