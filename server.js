@@ -3,8 +3,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs'; // for hashing passwords
 import jwt from 'jsonwebtoken'; // for creating JWT tokens
-import User from './models/User.js'; // Assuming you have a User model
-import Profile from './models/Profile.js'; // Profile model if needed
+import User from './ui/models/User.js'; // Assuming you have a User model
+import Profile from './ui/models/Profile.js'; // Profile model if needed
 import connectDB from './config/db.js'; // Database connection
 
 dotenv.config();
