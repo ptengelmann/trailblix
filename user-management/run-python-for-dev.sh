@@ -1,7 +1,7 @@
 podman run -it --rm \
   -v $(pwd):/app:Z \
   -w /app \
-  --name node-coding-container \
+  --name python-coding-user-management \
   --network host \
   --pod trailblix-dev-pod \
-  -d node-coding
+  -d python-coding
