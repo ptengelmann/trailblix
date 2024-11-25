@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     traceroute \
     dnsutils \
     net-tools \
+    telnet \
     && apt-get clean
 
 # Set the working directory
