@@ -8,6 +8,7 @@ const JobsWrapper = styled.section`
     color: var(--deep-blue);
     max-width: 1200px;
     margin: 0 auto;
+    overflow: hidden;
 `;
 
 const SectionTitle = styled.h2`
@@ -42,6 +43,7 @@ const JobTitle = styled.h3`
     font-size: 1.75rem;
     color: var(--deep-blue);
     margin-bottom: 1rem;
+    font-weight: bold;
 `;
 
 const JobDetails = styled.p`
@@ -91,6 +93,7 @@ const JobAlertsSection = styled.div`
 const JobAlertsButton = styled(Button)`
     background-color: var(--deep-blue);
     font-size: 1.1rem;
+    padding: 1rem 2rem;
 `;
 
 const JobsPage = () => {
@@ -100,6 +103,7 @@ const JobsPage = () => {
         { title: 'Software Engineer', company: 'ABC Inc.', location: 'San Francisco', salary: '$120,000', type: 'Remote' },
         { title: 'Product Manager', company: 'TechStartup', location: 'London', salary: '$110,000', type: 'Hybrid' },
     ]);
+
     const [filter, setFilter] = useState({ location: '', jobType: '' });
 
     const handleFilterChange = (e) => {
