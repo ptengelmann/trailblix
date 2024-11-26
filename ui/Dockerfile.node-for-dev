@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     traceroute \
     dnsutils \
     net-tools \
+    telnet \
     && curl https://sh.rustup.rs -sSf | sh -s -- -y \
     && . $HOME/.cargo/env \
     && cargo install eza
