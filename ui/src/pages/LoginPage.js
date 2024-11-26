@@ -1,4 +1,3 @@
-// src/pages/LoginPage.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -6,7 +5,7 @@ import { useAuth } from '../AuthContext.js';
 
 const LoginWrapper = styled.section`
     display: flex;
-    flex-direction: column;x
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 4rem 2rem;
@@ -31,6 +30,11 @@ const Input = styled.input`
     border-radius: 5px;
     border: 1px solid var(--gray-tone);
     font-size: 1rem;
+    color: var(--deep-blue);
+    &:focus {
+        outline: none;
+        border-color: var(--bright-coral);
+    }
 `;
 
 const Button = styled.button`
@@ -84,6 +88,31 @@ const ErrorMessage = styled.p`
     font-size: 0.9rem;
 `;
 
+const SocialLoginWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 500px;
+`;
+
+const SocialButton = styled.button`
+    background-color: ${props => props.color || 'var(--bright-coral)'};
+    color: var(--soft-white);
+    padding: 1rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s;
+
+    &:hover {
+        opacity: 0.8;
+    }
+`;
+
 const LoginPage = () => {
     const navigate = useNavigate();
     const { login } = useAuth();
@@ -112,6 +141,11 @@ const LoginPage = () => {
         navigate('/dashboard');
     };
 
+    const handleSocialLogin = (provider) => {
+        console.log(`Login with ${provider}`);
+        // Add social login logic here
+    };
+
     return (
         <LoginWrapper>
             <h1>Login to Your Account</h1>
@@ -138,6 +172,17 @@ const LoginPage = () => {
                 </ForgotPasswordButton>
                 <Button type="submit">Login</Button>
             </Form>
+
+            {/* Social Login Buttons */}
+            <SocialLoginWrapper>
+                <SocialButton color="var(--bright-coral)" onClick={() => handleSocialLogin('Google')}>
+                    Sign in with Google
+                </SocialButton>
+                <SocialButton color="var(--deep-blue)" onClick={() => handleSocialLogin('LinkedIn')}>
+                    Sign in with LinkedIn
+                </SocialButton>
+            </SocialLoginWrapper>
+
             <SignUpLinkWrapper>
                 Don't have an account yet? <a onClick={() => navigate('/signup')}>Sign Up</a>
             </SignUpLinkWrapper>
@@ -145,4 +190,4 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default LoginPage;
