@@ -10,15 +10,16 @@
     --deep-blue: #003366;
 }
 
-/* Styles from LoginPage.css */
-.login-wrapper {
+/* Common Styles */
+.wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 4rem 2rem;
-    min-height: 80vh;
-    background-color: var(--light-pink);
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--deep-blue) 30%, var(--light-pink) 100%);
+    color: var(--soft-white);
 }
 
 .form {
@@ -28,37 +29,71 @@
     width: 100%;
     max-width: 500px;
     background-color: var(--soft-white);
-    padding: 2rem;
+    padding: 2.5rem;
     border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: left;
 }
 
 .input {
-    padding: 1rem;
-    border-radius: 5px;
+    padding: 0.8rem;
+    border-radius: 8px;
     border: 1px solid var(--gray-tone);
     font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.input:focus {
+    border-color: var(--deep-blue);
 }
 
 .button {
-    padding: 1rem;
-    border-radius: 5px;
-    border: none;
     background-color: var(--bright-coral);
-    color: white;
-    font-size: 1rem;
+    color: var(--soft-white);
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s;
 }
 
 .button:hover {
-    background-color: var(--dark-coral);
+    background-color: #ff8787;
+    transform: translateY(-3px);
 }
 
-.sign-up-link-wrapper {
-    margin-top: 1rem;
-    font-size: 0.9rem;
+.social-button {
+    background-color: #4285f4; /* Google Color */
+}
+
+.social-button:hover {
+    background-color: #357ae8; /* Darker Google Color */
+}
+
+.linkedin-button {
+    background-color: #0077b5; /* LinkedIn Color */
+}
+
+.linkedin-button:hover {
+    background-color: #005582; /* Darker LinkedIn Color */
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     color: var(--gray-tone);
+}
+
+.checkbox {
+    cursor: pointer;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9rem;
     text-align: center;
 }
 
@@ -73,9 +108,93 @@
     color: #ff8787;
 }
 
+/* Styles from LoginPage.css */
+.login-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    min-height: 80vh;
+    background-color: var(--light-pink);
+}
+
+.sign-up-link-wrapper {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: var(--gray-tone);
+    text-align: center;
+}
+
+/* Styles from SignUpPage.js */
+.sign-up-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--deep-blue) 30%, var(--light-pink) 100%);
+    color: var(--soft-white);
+}
+
+.sign-up-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 500px;
+    background-color: var(--soft-white);
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.sign-up-input {
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid var(--gray-tone);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.sign-up-input:focus {
+    border-color: var (--deep-blue);
+}
+
+.sign-up-button {
+    background-color: var(--bright-coral);
+    color: var(--soft-white);
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.sign-up-button:hover {
+    background-color: #ff8787;
+    transform: translateY(-3px);
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gray-tone);
+}
+
+.checkbox {
+    cursor: pointer;
+}
+
 .error-message {
     color: red;
     font-size: 0.9rem;
+    text-align: center;
 }
 
 /* Styles from AboutPage.css */
