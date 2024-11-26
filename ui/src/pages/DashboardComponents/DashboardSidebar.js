@@ -136,6 +136,8 @@ const DashboardSidebar = () => {
             setActiveTab('jobs');
         } else if (path.includes('progress')) {
             setActiveTab('progress');
+        } else if (path.includes('resources')) {
+            setActiveTab('resources');
         } else {
             setActiveTab('home');
         }
@@ -167,6 +169,10 @@ const DashboardSidebar = () => {
             </TabButton>
             <TabButton onClick={() => navigate('/dashboard/progress')} className={activeTab === 'progress' ? 'active' : ''}>
                 <TabIcon icon={faClipboardList} /> Progress
+            </TabButton>
+            {/* Add Resources tab */}
+            <TabButton onClick={() => navigate('/dashboard/resources')} className={activeTab === 'resources' ? 'active' : ''}>
+                <TabIcon icon={faClipboardList} /> Resources
             </TabButton>
 
             {/* Profile Icon and Dropdown */}
