@@ -86,7 +86,6 @@ if [[ $# -eq 0 || "$1" == "--help" || "$1" == "-h" ]]; then
 fi
 
 while [[ $# -gt 0 ]]; do
-    echo "Processing argument: $1"
     case $1 in
         --engine|-e)
             engine="$2"
@@ -130,9 +129,6 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
-
-# Debugging: Print the remaining arguments
-echo "Remaining arguments: $@"
 
 # Display usage if required arguments are missing
 if [[ -z "$podname" || -z "$hostname" ]]; then
