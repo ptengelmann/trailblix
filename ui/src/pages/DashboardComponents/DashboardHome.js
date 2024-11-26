@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { LineChart, Line, PieChart, Pie, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import { Cell } from 'recharts'; 
+import { Cell } from 'recharts';
 
 // Sample data for graphs
 const skillProgressData = [
@@ -21,12 +21,12 @@ const COLORS = ['#FF6B6B', '#FFB3B3'];
 
 // Styled Components for Dashboard Home
 const DashboardContent = styled.div`
-    padding: 3rem 2rem 2rem 2rem;
+    padding: 2rem;
     background-color: var(--light-pink);
-    min-height: 100vh; /* Make sure the content takes full height */
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    gap: 2rem; /* Add some space between sections */
+    gap: 3rem;
 `;
 
 const Header = styled.div`
@@ -49,14 +49,15 @@ const PlanCard = styled.div`
     align-items: center;
     justify-content: center;
     background-color: ${(props) => (props.isFree ? '#FF6B6B' : '#4CAF50')};
-    padding: 0.75rem 1.5rem;
-    border-radius: 5px;
+    padding: 1rem 2rem;
+    border-radius: 15px;
     color: white;
     cursor: pointer;
-    width: 200px;
+    transition: background-color 0.3s ease, transform 0.3s;
 
     &:hover {
         background-color: ${(props) => (props.isFree ? '#FFB3B3' : '#81C784')};
+        transform: translateY(-3px);
     }
 `;
 
@@ -64,14 +65,15 @@ const MetricCard = styled.div`
     background-color: var(--soft-white);
     border-radius: 15px;
     padding: 2rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
-    width: 100%;
+    width: 48%;
     margin-bottom: 2rem;
 
     &:hover {
         transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
     }
 
     h2 {
@@ -90,7 +92,7 @@ const GraphContainer = styled.div`
     background-color: var(--soft-white);
     border-radius: 15px;
     padding: 2rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     margin-bottom: 2rem;
 `;
 
@@ -110,7 +112,7 @@ const DashboardHome = () => {
                 </PlanCard>
             </Header>
 
-            <div className="metrics">
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
                 {/* Career Progress Card */}
                 <MetricCard>
                     <h2>Career Progress</h2>
