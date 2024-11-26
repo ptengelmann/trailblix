@@ -32,13 +32,6 @@ const Input = styled.input`
     width: 100%;
 `;
 
-const Dropdown = styled.select`
-    padding: 0.5rem;
-    border: 1px solid var(--gray-tone);
-    border-radius: 5px;
-    font-size: 1rem;
-`;
-
 const Button = styled.button`
     background-color: var(--bright-coral);
     color: var(--soft-white);
@@ -51,6 +44,29 @@ const Button = styled.button`
 
     &:hover {
         background-color: #ff8787;
+    }
+`;
+
+const OutcomeCardWrapper = styled.div`
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+`;
+
+const OutcomeCard = styled.div`
+    background-color: ${(props) => (props.isSelected ? 'var(--bright-coral)' : 'var(--soft-white)')};
+    color: ${(props) => (props.isSelected ? 'var(--soft-white)' : 'var(--deep-blue)')};
+    padding: 1.5rem 2rem;
+    border-radius: 25px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     }
 `;
 
@@ -129,38 +145,35 @@ const ProfileCreationPage = () => {
                     required
                 />
 
+                {/* Desired Outcome Cards */}
                 <label htmlFor="desiredOutcome">Desired Outcome:</label>
-                <Dropdown
-                    id="desiredOutcome"
-                    name="desiredOutcome"
-                    value={formData.desiredOutcome}
-                    onChange={handleChange}
-                >
-                    <option value="">-- Select --</option>
-                    <option value="Career Progression">Career Progression</option>
-                    <option value="Change Within The Same Field">Change Within The Same Field</option>
-                    <option value="Complete Change">Complete Change</option>
-                </Dropdown>
+                <OutcomeCardWrapper>
+                    {['Career Progression', 'Change Within The Same Field', 'Complete Change'].map((outcome) => (
+                        <OutcomeCard
+                            key={outcome}
+                            isSelected={formData.desiredOutcome === outcome}
+                            onClick={() => setFormData({ ...formData, desiredOutcome: outcome })}
+                        >
+                            {outcome}
+                        </OutcomeCard>
+                    ))}
+                </OutcomeCardWrapper>
 
+                {/* Show additional fields based on selected outcome */}
                 {formData.desiredOutcome === 'Career Progression' && (
                     <>
                         <label htmlFor="desiredNextStep">Desired Next Step:</label>
-                        <Dropdown
-                            id="desiredNextStep"
+                        <Input
+                            type="text"
                             name="desiredNextStep"
+                            placeholder="Your desired next step"
                             value={formData.desiredNextStep}
                             onChange={handleChange}
-                        >
-                            <option value="">-- Select --</option>
-                            <option value="Specialization">Specialization</option>
-                            <option value="Leadership">Leadership</option>
-                            <option value="Expanded Skills">Expanded Skills</option>
-                        </Dropdown>
-
+                        />
                         <Input
                             type="text"
                             name="skillGaps"
-                            placeholder="Specific skills or certs you are interested in"
+                            placeholder="Skills or certifications you need"
                             value={formData.skillGaps}
                             onChange={handleChange}
                         />
@@ -172,14 +185,14 @@ const ProfileCreationPage = () => {
                         <Input
                             type="text"
                             name="preferredRoleType"
-                            placeholder="Preferred Role Type (e.g., transitioning to...)"
+                            placeholder="Preferred Role Type"
                             value={formData.preferredRoleType}
                             onChange={handleChange}
                         />
                         <Input
                             type="text"
                             name="skillTransferability"
-                            placeholder="Current skills that can be leveraged"
+                            placeholder="Skills that can be leveraged"
                             value={formData.skillTransferability}
                             onChange={handleChange}
                         />
