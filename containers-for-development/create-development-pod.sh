@@ -7,16 +7,25 @@ NC='\033[0m' # No Color
 
 PROJECT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo "$(pwd)")
 
-# Check if the pod exists, if not, create it
-if ! podman pod exists trailblix-dev-pod; then
-  echo -e "${YELLOW}Creating pod trailblix-dev-pod...${NC}"
-  ${PROJECT_ROOT}/deploy/create-pod.sh -e podman \
-    -pn trailblix-dev-pod \
-    -hn trailblix-dev-machine \
-    -m 4G \
-    -net marcos-net \
-    -re
-  echo -e "${GREEN}Pod trailblix-dev-pod created successfully.${NC}"
-else
-  echo -e "${GREEN}Pod trailblix-dev-pod already exists.${NC}"
-fi
+# Function to create a pod if it doesn't exist
+create_pod() {
+  local POD_NAME=$1
+  if ! podman pod exists "$POD_NAME"; then
+    echo -e "${YELLOW}Creating pod $POD_NAME...${NC}"
+    ${PROJECT_ROOT}/deploy/create-pod.sh -e podman \
+      -pn "$POD_NAME" \
+      -hn "${POD_NAME}-host" \
+      -m 4G \
+      -net marcos-net \
+      -re
+    echo -e "${GREEN}Pod $POD_NAME created successfully.${NC}"
+  else
+    echo -e "${GREEN}Pod $POD_NAME already exists.${NC}"
+  fi
+}
+
+create_pod "trailblix-dev-pod"
+
+create_pod "mongo-dev-pod"
+
+exit 0
