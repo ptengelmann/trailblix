@@ -1,73 +1,88 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-// Styled-components for the Benefits Overview Section
+// Import images directly
+import b1Image from '../assets/b1.svg';
+import b2Image from '../assets/b2.svg';
+import b3Image from '../assets/b3.svg';
+import b4Image from '../assets/b4.svg';
+
+// Styled-components for the Benefits Section
 const BenefitsWrapper = styled.section`
-    padding: 5rem 2rem;
+    padding: 4rem 2rem;
     background-color: var(--soft-white);
     color: var(--deep-blue);
-    text-align: center;
     max-width: 1200px;
     margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    height: auto;
 `;
 
 const SectionTitle = styled.h2`
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
+    font-size: 3rem;
+    text-align: center;
     color: var(--deep-blue);
     font-weight: 700;
+    margin-bottom: 3rem;
 `;
 
-const BenefitsCard = styled.div`
-    position: relative;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    padding: 2rem;
+const BenefitsGrid = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Image and Text side-by-side */
+    gap: 2rem;
+    margin-bottom: 4rem;
+    align-items: center; /* Align items in the center */
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr; /* Stacks on mobile */
+    }
+`;
+
+const BenefitCard = styled.div`
+    display: flex;
+    flex-direction: ${({ reverse }) => (reverse ? 'row-reverse' : 'row')}; /* Alternates text and image */
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
     width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: auto;
+    padding: 2rem 0;
 `;
 
-const ContentWrapper = styled.div`
-    text-align: left;
-    margin-bottom: 2rem;
+const TextWrapper = styled.div`
+    flex: 1;
+    color: var(--deep-blue);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 `;
 
-const CardTitle = styled.h3`
-    font-size: 2rem;
-    margin-bottom: 1rem;
+const Title = styled.h3`
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
     color: var(--bright-coral);
-    font-weight: bold;
 `;
 
-const CardSubheader = styled.h4`
-    font-size: 1.2rem;
+const SubTitle = styled.h4`
+    font-size: 1.6rem;
     color: var(--deep-blue);
     margin-bottom: 1rem;
-    font-weight: 500;
 `;
 
-const CardDescription = styled.p`
+const Description = styled.p`
     font-size: 1rem;
     color: var(--gray-tone);
-    margin-bottom: 1rem;
-    line-height: 1.5;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
 `;
 
-const ButtonContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-`;
-
-const NavigationButton = styled.button`
+const Button = styled.button`
     background-color: var(--bright-coral);
     color: var(--soft-white);
-    padding: 0.75rem 1.5rem;
+    padding: 0.75rem 2rem;
     border-radius: 25px;
-    font-size: 1.1rem;
+    font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
     border: none;
@@ -78,88 +93,78 @@ const NavigationButton = styled.button`
     }
 `;
 
-const BenefitImage = styled.img`
+const ImageWrapper = styled.div`
+    flex: 1;
     max-width: 100%;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 15px;
-    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
-// Main Benefits Overview component
-const BenefitsOverview = () => {
-    const [currentIndex, setCurrentIndex] = useState(0);
+const BenefitImage = styled.img`
+    width: 80%;
+    max-width: 500px;  /* Increased max-width for larger images */
+    height: auto;
+    border-radius: 15px;
+    background-color: transparent !important; /* Ensures no background behind the image */
+    object-fit: contain;
+    display: block; /* Fixes any inline-block rendering issues */
+`;
 
+const BenefitsOverview = () => {
+    const navigate = useNavigate();
     const benefits = [
         {
             title: 'Personalized Career Path',
-            subheader: 'Tailored Recommendations Just for You',
+            subTitle: 'Tailored recommendations for your growth',
             description:
-                'Get career recommendations that are personalized to your skills, aspirations, and career goals. We analyze your profile and provide actionable steps to get you there.',
-            image: 'https://via.placeholder.com/800x450?text=Personalized+Career+Path',
+                'At Trailblix, we create a personalized career plan just for you. We analyze your current skills and aspirations to suggest the best career paths, tailored to your goals and the market demand. Our intelligent system helps you choose the next steps with confidence.',
+            image: b1Image,
+            link: '/profile-creation',
         },
         {
             title: 'Skill Gap Analysis',
-            subheader: 'Identify Areas for Growth',
+            subTitle: 'Know exactly what skills to improve',
             description:
-                'Our skill gap analysis helps you discover which skills are needed for your desired career roles. We provide learning plans to bridge those gaps and equip you for success.',
-            image: 'https://via.placeholder.com/800x450?text=Skill+Gap+Analysis',
+                'Our skill gap analysis tool identifies what skills are necessary for your dream job. Based on your current skills, we pinpoint the gaps and recommend specific learning paths to bridge them, giving you a clear road map to your career success.',
+            image: b2Image,
+            link: '/profile-creation',
         },
         {
             title: 'Real-Time Job Suggestions',
-            subheader: 'Never Miss an Opportunity',
+            subTitle: 'Stay updated with job opportunities',
             description:
-                'Receive real-time job suggestions that match your skills and preferences. We curate job openings based on your profile, ensuring you always have access to the latest opportunities.',
-            image: 'https://via.placeholder.com/800x450?text=Real-Time+Job+Suggestions',
+                'Receive personalized job recommendations based on your skills, preferences, and career goals. Trailblix provides real-time job listings, ensuring that you never miss an opportunity to take the next step in your career.',
+            image: b3Image,
+            link: '/profile-creation',
         },
         {
             title: 'Expert Insights',
-            subheader: 'Learn from Industry Leaders',
+            subTitle: 'Stay ahead with professional advice',
             description:
-                'Gain insights from experts in your field. We offer valuable tips, industry trends, and career advice from professionals to help you stay ahead of the curve.',
-            image: 'https://via.placeholder.com/800x450?text=Expert+Insights',
-        },
-        {
-            title: 'Supportive Community',
-            subheader: 'Join a Network of Like-Minded Individuals',
-            description:
-                'Connect with professionals and like-minded individuals who share similar career aspirations. Share knowledge, network, and grow together in a supportive community.',
-            image: 'https://via.placeholder.com/800x450?text=Supportive+Community',
-        },
-        {
-            title: 'Flexible Learning Resources',
-            subheader: 'Learn at Your Own Pace',
-            description:
-                'Access a variety of learning resources that cater to your personal learning style. From articles to courses, learn what you need at your own pace and convenience.',
-            image: 'https://via.placeholder.com/800x450?text=Flexible+Learning+Resources',
+                'Gain valuable insights from industry experts. Stay updated with the latest trends, tips, and career advice directly from professionals in your field. With Trailblix, you get the inside scoop on what works in your industry.',
+            image: b4Image,
+            link: '/profile-creation',
         },
     ];
-
-    const handleNext = () => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % benefits.length);
-    };
-
-    const handleBack = () => {
-        setCurrentIndex((prevIndex) => (prevIndex - 1 + benefits.length) % benefits.length);
-    };
-
-    const currentBenefit = benefits[currentIndex];
 
     return (
         <BenefitsWrapper>
             <SectionTitle>Why Choose Trailblix?</SectionTitle>
-            <BenefitsCard>
-                <ContentWrapper>
-                    <CardTitle>{currentBenefit.title}</CardTitle>
-                    <CardSubheader>{currentBenefit.subheader}</CardSubheader>
-                    <CardDescription>{currentBenefit.description}</CardDescription>
-                </ContentWrapper>
-                <BenefitImage src={currentBenefit.image} alt={currentBenefit.title} />
-                <ButtonContainer>
-                    <NavigationButton onClick={handleBack}>Back</NavigationButton>
-                    <NavigationButton onClick={handleNext}>Next</NavigationButton>
-                </ButtonContainer>
-            </BenefitsCard>
+
+            {benefits.map((benefit, index) => (
+                <BenefitCard key={index} reverse={index % 2 !== 0}>
+                    <TextWrapper>
+                        <Title>{benefit.title}</Title>
+                        <SubTitle>{benefit.subTitle}</SubTitle>
+                        <Description>{benefit.description}</Description>
+                        <Button onClick={() => navigate(benefit.link)}>Learn More</Button>
+                    </TextWrapper>
+                    <ImageWrapper>
+                        <BenefitImage src={benefit.image} alt={benefit.title} />
+                    </ImageWrapper>
+                </BenefitCard>
+            ))}
         </BenefitsWrapper>
     );
 };

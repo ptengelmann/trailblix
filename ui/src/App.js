@@ -15,13 +15,14 @@ import Footer from './components/Footer.js';
 import ContactUsPage from './pages/ContactUsPage.js'; 
 import TermsOfServicePage from './pages/TermsOfServicePage.js'; 
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage.js'; 
-import DashboardPage from './pages/DashboardPage.js';  // Import DashboardPage
-import Header from './components/Header.js';  // Import Header
-import CareerDetailsPage from './pages/DashboardComponents/CareerDetailsPage.js'; // Import CareerDetailsPage
-import LearningPathsPage from './pages/DashboardComponents/LearningPathsPage.js'; // Import LearningPathsPage
-import ProgressPage from './pages/DashboardComponents/ProgressPage.js'; // Import ProgressPage
+import DashboardPage from './pages/DashboardPage.js';  
+import Header from './components/Header.js';  
+import CareerDetailsPage from './pages/DashboardComponents/CareerDetailsPage.js'; 
+import LearningPathsPage from './pages/DashboardComponents/LearningPathsPage.js'; 
+import ProgressPage from './pages/DashboardComponents/ProgressPage.js'; 
+import JobsPage from './pages/DashboardComponents/JobsPage.js';  
+import ResourcesPage from './pages/DashboardComponents/ResourcesPage.js'; // Import ResourcesPage
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 
 // Component to conditionally render the Header and Footer based on route
 const AppLayout = ({ children }) => {
@@ -58,8 +59,6 @@ function App() {
                         <Route path="/contact" element={<ContactUsPage />} />
                         <Route path="/terms-of-service" element={<TermsOfServicePage />} />
                         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-                        <Route path="/dashboard/career-paths/:careerName" element={<CareerDetailsPage />} />
-                        <Route path="/dashboard/progress" element={<ProgressPage />} /> {/* Progress Page Route */}
 
                         {/* Protected Route for Dashboard */}
                         <Route 
@@ -69,7 +68,14 @@ function App() {
                                     <DashboardPage /> 
                                 </ProtectedRoute>
                             }
-                        />
+                        >
+                            {/* Nested routes for Dashboard */}
+                            <Route path="career-paths/:careerName" element={<CareerDetailsPage />} />
+                            <Route path="progress" element={<ProgressPage />} />
+                            <Route path="jobs" element={<JobsPage />} />
+                            <Route path="resources" element={<ResourcesPage />} /> {/* Resources Page Route */}
+                            <Route path="learning-paths" element={<LearningPathsPage />} />
+                        </Route>
                     </Routes>
                 </AppLayout>
             </Router>

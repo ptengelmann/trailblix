@@ -5,7 +5,9 @@ import DashboardHome from './DashboardComponents/DashboardHome.js'; // Import Ho
 import CareerPathsPage from './DashboardComponents/CareerPathsPage.js';  // Import Career Paths Page
 import CareerDetailsPage from './DashboardComponents/CareerDetailsPage.js'; // Import Career Details Page
 import LearningPathsPage from './DashboardComponents/LearningPathsPage.js'; // Import Learning Paths Page
+import JobsPage from './DashboardComponents/JobsPage.js'; // Import Jobs Page
 import ProgressPage from './DashboardComponents/ProgressPage.js'; // Import Progress Page
+import ResourcesPage from './DashboardComponents/ResourcesPage.js'; // Import Resources Page
 
 const DashboardPage = () => {
     const [activeTab, setActiveTab] = useState('home');  // Default active tab is 'home'
@@ -32,8 +34,12 @@ const DashboardPage = () => {
                     <Route path="career-paths/:careerName" element={<CareerDetailsPage />} />
                     {/* Route for Learning Paths */}
                     <Route path="learning-paths" element={<LearningPathsPage />} />
+                    {/* Route for Jobs Page */}
+                    <Route path="jobs" element={<JobsPage />} />
                     {/* Route for Progress Page */}
-                    <Route path="progress" element={<ProgressPage />} /> {/* Add Progress Page Route */}
+                    <Route path="progress" element={<ProgressPage />} />
+                    {/* Route for Resources Page */}
+                    <Route path="resources" element={<ResourcesPage />} />
                 </Routes>
             </div>
         </div>
