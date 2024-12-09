@@ -13,18 +13,17 @@ print_message() {
     echo -e "${color}${message}${NC}"
 }
 
-# Function to check if a pod exists
-pod_exists() {
-    local engine=$1
-    local podname=$2
-    $engine pod exists $podname 2>/dev/null
-}
-
 # Function to check if an image exists
 image_exists() {
     local engine=$1
     local image_name=$2
-    $engine images --format "{{.Repository}}" | grep -q "^${image_name}$"
+    local images_list
+    images_list=$($engine images --format "{{.Repository}}:{{.Tag}}")
+    if echo "$images_list" | grep -qE "^(localhost/)?${image_name}(:latest)?$"; then
+        return 0
+    else
+        return 1
+    fi
 }
 
 # Display usage if no arguments or help flag
@@ -40,19 +39,25 @@ usage() {
     echo -e "  --remove-existing|-re Remove existing pod if it exists (default: false)"
     echo -e "  --remove-force|-rf    Forcefully remove existing pod if it exists (default: false)"
     echo -e "  --image-name|-i       Name of the image to verify (required)"
+    echo -e "  --container-name|-c   Name of the container to run (required)"
     echo -e "  --help|-h             Display this help message"
     echo -e "\n${YELLOW}Examples:${NC}"
-    echo -e "  $0 --engine podman --podname my-pod --hostname my-host --memory 4G --image-name node-dev --ports 8080:80 8443:443"
-    echo -e "  $0 --podname test-pod --hostname test-host --image-name node-dev --remove-existing"
+    echo -e "  $0 --engine podman --podname my-pod --hostname my-host --memory 4G --image-name node-dev --container-name my-container --ports 8080:80 8443:443"
 }
 
-# Parse arguments
+# Default values
 engine="podman"
+podname=""
+hostname=""
 memory="8G"
+network=""
+ports=()
 remove_existing=false
 remove_force=false
 image_name=""
+container_name=""
 
+# Parse arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
         --engine|-e)
@@ -76,9 +81,9 @@ while [[ $# -gt 0 ]]; do
             shift 2
             ;;
         --ports|-p)
-            ports=("$2")
+            ports+=("$2")
             shift 2
-            while [[ $1 != -* ]] && [[ $# -gt 0 ]]; do
+            while [[ $# -gt 0 && $1 != -* ]]; do
                 ports+=("$1")
                 shift
             done
@@ -95,6 +100,10 @@ while [[ $# -gt 0 ]]; do
             image_name="$2"
             shift 2
             ;;
+        --container-name|-c)
+            container_name="$2"
+            shift 2
+            ;;
         --help|-h)
             usage
             exit 0
@@ -107,53 +116,39 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Check required arguments
-if [[ -z $podname || -z $hostname || -z $image_name ]]; then
-    print_message $RED "Error: podname, hostname, and image-name are required."
+# Check if required arguments are provided
+if [ -z "$podname" ] || [ -z "$hostname" ] || [ -z "$image_name" ] || [ -z "$container_name" ]; then
+    print_message $RED "Error: Pod name, hostname, image name, and container name are required."
     usage
     exit 1
 fi
 
-# Check if the image exists
-if ! image_exists $engine $image_name; then
-    print_message $RED "Error: Image '$image_name' does not exist. Please run the script: build_node_dev_image.sh"
-    exit 1
-fi
-
-# Check if the pod exists
-if ! pod_exists $engine $podname; then
-    print_message $RED "Error: Pod '$podname' does not exist. Please run the script: create-pod.sh"
-    exit 1
-fi
-
 # Set default network if not provided
-network=${network:-"$podname-net"}
-
-# Check if network exists, if not, create it
-if ! $engine network inspect $network &>/dev/null; then
-    print_message $YELLOW "Warning: Network '$network' does not exist. Creating it now."
-    if $engine network create $network; then
-        print_message $GREEN "Network '$network' created successfully."
-    else
-        print_message $RED "Error: Failed to create network '$network'."
-        exit 1
-    fi
+if [ -z "$network" ]; then
+    network="${podname}-net"
 fi
 
-# Pod and image checks passed; continue with pod creation
-create_command="$engine pod create --name $podname --hostname $hostname --memory $memory --network $network"
+# Call create-pod.sh to manage the pod
+./create-pod.sh \
+  --engine "$engine" \
+  --podname "$podname" \
+  --hostname "$hostname" \
+  --memory "$memory" \
+  --network "$network" \
+  --remove-existing  \
+  --remove-force  \
+  --ports "${ports[@]}"
 
-# Add port mappings
-for port in "${ports[@]}"; do
-    create_command+=" -p $port"
-done
-
-print_message $GREEN "Creating pod with command:"
-print_message $GREEN "$create_command"
-
-if eval $create_command; then
-    print_message $GREEN "Pod '$podname' created successfully."
+# Check if the image exists
+if image_exists $engine $image_name; then
+    print_message $GREEN "Image '$image_name' exists."
 else
-    print_message $RED "Error: Failed to create pod '$podname'."
+    print_message $RED "Error: Image '$image_name' does not exist."
     exit 1
 fi
+
+# Run the container
+print_message $YELLOW "Running container with image: $image_name"
+$engine run --cap-add=NET_RAW -d --name "$container_name" --pod "$podname" "$image_name"
+
+print_message $GREEN "Container started successfully with image: $image_name"

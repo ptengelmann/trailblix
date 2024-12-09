@@ -70,7 +70,7 @@ build_image() {
 
 # Parse arguments
 engine="podman"
-image_name="node-dev-attach"
+image_name="node-deploy-container"
 node_args=""
 dockerfile="../Dockerfile.dev"  # Default Dockerfile path
 
@@ -116,9 +116,4 @@ fi
 # Build the image
 build_image $engine $image_name "$node_args" "$dockerfile"
 
-print_message $GREEN "Image build complete. You can now run a container with:"
-if [ -n "$node_args" ]; then
-    print_message $YELLOW "$engine run -it --rm -p 3000:3000 -v \$(pwd):/app $image_name node $node_args npm start"
-else
-    print_message $YELLOW "$engine run -it --rm -p 3000:3000 -v \$(pwd):/app $image_name"
-fi
+print_message $GREEN "Image build complete"
