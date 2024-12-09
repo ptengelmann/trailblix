@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import bcrypt from 'bcryptjs';
+import './styles.css'; // Ensure you import the CSS file for styling
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useNavigate, Link } from 'react-router-dom';
@@ -117,10 +120,18 @@ const SocialButton = styled.button`
 `;
 
 const LoginPage = () => {
-    const navigate = useNavigate();
-    const { login } = useAuth();
-    const [formData, setFormData] = useState({ email: '', password: '' });
-    const [error, setError] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [response, setResponse] = useState(null);
+
+  
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      // Encrypt the password
+      const salt = bcrypt.genSaltSync(10);
+      const encryptedPassword = bcrypt.hashSync(password, salt);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -155,19 +166,17 @@ const LoginPage = () => {
         console.log(`Login with ${provider}`);
         // Add social login logic here
     };
+ 
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        // Encrypt the password before sending it
-        const encryptedPassword = CryptoJS.AES.encrypt(formData.password, config.encryptionKey).toString();
-        const userExists = await loginUser(formData.email, encryptedPassword);
-        if (!userExists) {
-            setError('User does not exist or password is incorrect. Please check your credentials.');
-            return;
-        }
-        // Navigate to the home page or dashboard after successful login
-        navigate('/dashboard');
-    };
+      // Submit the form data to the backend
+      const res = await axios.post('http://localhost:5000/api/login', { email, password: encryptedPassword });
+      setResponse(res.data); // Preserve the return response
+      setError(''); // Clear any previous errors
+    } catch (err) {
+      setError('Login failed. Please try again.');
+    }
+  };
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -248,6 +257,7 @@ const LoginPage = () => {
             </form>
         </div>
     );
+
 };
 
 export default LoginPage;
