@@ -11,7 +11,7 @@
 }
 
 /* Common Styles */
-.wrapper {
+.wrapper, .login-wrapper, .sign-up-wrapper, .benefits-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,93 +22,6 @@
     color: var(--soft-white);
 }
 
-.form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    width: 100%;
-    max-width: 500px;
-    background-color: var(--soft-white);
-    padding: 2.5rem;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    text-align: left;
-}
-
-.input {
-    padding: 0.8rem;
-    border-radius: 8px;
-    border: 1px solid var(--gray-tone);
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.3s;
-}
-
-.input:focus {
-    border-color: var(--deep-blue);
-}
-
-.button {
-    background-color: var(--bright-coral);
-    color: var(--soft-white);
-    padding: 1rem;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-.button:hover {
-    background-color: #ff8787;
-    transform: translateY(-3px);
-}
-
-.social-button {
-    background-color: #4285f4; /* Google Color */
-}
-
-.social-button:hover {
-    background-color: #357ae8; /* Darker Google Color */
-}
-
-.linkedin-button {
-    background-color: #0077b5; /* LinkedIn Color */
-}
-
-.linkedin-button:hover {
-    background-color: #005582; /* Darker LinkedIn Color */
-}
-
-.checkbox-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--gray-tone);
-}
-
-.checkbox {
-    cursor: pointer;
-}
-
-.error-message {
-    color: red;
-    font-size: 0.9rem;
-    text-align: center;
-}
-
-.sign-up-link-wrapper a {
-    color: var(--bright-coral);
-    text-decoration: underline;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-
-.sign-up-link-wrapper a:hover {
-    color: #ff8787;
-}
-
-/* Styles from LoginPage.css */
 .login-wrapper {
     display: flex;
     flex-direction: column;
@@ -119,26 +32,7 @@
     background-color: var(--light-pink);
 }
 
-.sign-up-link-wrapper {
-    margin-top: 1rem;
-    font-size: 0.9rem;
-    color: var(--gray-tone);
-    text-align: center;
-}
-
-/* Styles from SignUpPage.js */
-.sign-up-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 4rem 2rem;
-    min-height: 100vh;
-    background: linear-gradient(135deg, var(--deep-blue) 30%, var(--light-pink) 100%);
-    color: var(--soft-white);
-}
-
-.sign-up-form {
+.form, .sign-up-form {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -151,7 +45,19 @@
     text-align: left;
 }
 
-.sign-up-input {
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 500px;
+    background-color: var(--soft-white);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.input, .sign-up-input {
     padding: 0.8rem;
     border-radius: 8px;
     border: 1px solid var(--gray-tone);
@@ -160,11 +66,24 @@
     transition: border-color 0.3s;
 }
 
-.sign-up-input:focus {
-    border-color: var (--deep-blue);
+.input {
+    padding: 1rem;
+    border-radius: 5px;
+    border: 1px solid var(--gray-tone);
+    font-size: 1rem;
+    color: var(--deep-blue);
 }
 
-.sign-up-button {
+.input:focus, .sign-up-input:focus {
+    border-color: var(--deep-blue);
+}
+
+.input:focus {
+    outline: none;
+    border-color: var(--deep-blue);
+}
+
+.button, .sign-up-button, .call-to-action, .toggle-button, .toggle-comparison-button {
     background-color: var(--bright-coral);
     color: var(--soft-white);
     padding: 1rem;
@@ -175,9 +94,30 @@
     transition: background-color 0.3s, transform 0.3s;
 }
 
-.sign-up-button:hover {
+.button {
+    padding: 1rem;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--deep-blue);
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.button:hover, .sign-up-button:hover, .call-to-action:hover, .toggle-button:hover, .toggle-comparison-button:hover {
     background-color: #ff8787;
     transform: translateY(-3px);
+}
+
+.button:hover {
+    background-color: var(--dark-coral);
+}
+
+.sign-up-link-wrapper {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: var(--gray-tone);
+    text-align: center;
 }
 
 .checkbox-wrapper {
@@ -197,12 +137,11 @@
     text-align: center;
 }
 
-/* Styles from AboutPage.css */
 .about-wrapper {
     padding: 8rem 4rem 2rem;
     max-width: 1200px;
     margin: 0 auto;
-    color: var(--deep-blue);
+    color: var (--deep-blue);
 }
 
 .about-wrapper h1 {
@@ -231,7 +170,6 @@
     gap: 2rem;
 }
 
-/* Styles from Pricing.js */
 .pricing-section {
     padding: 4rem 2rem;
     background: linear-gradient(135deg, var(--deep-blue) 30%, var(--light-pink) 100%);
@@ -270,7 +208,7 @@
 
 .testimonial-card {
     background-color: var(--light-pink);
-    color: var(--deep-blue);
+    color: var (--deep-blue);
     padding: 1.5rem;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -299,23 +237,6 @@
 .testimonial-position {
     font-size: 0.9rem;
     color: var(--gray-tone);
-}
-
-.toggle-button {
-    background-color: var(--bright-coral);
-    color: var(--soft-white);
-    border: none;
-    border-radius: 20px;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    cursor: pointer;
-    margin: 1rem;
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-.toggle-button:hover {
-    background-color: #ff8787;
-    transform: translateY(-3px);
 }
 
 .toggle-button.active {
@@ -389,25 +310,6 @@
     font-style: italic;
 }
 
-.call-to-action {
-    margin-top: 1.5rem;
-    background-color: var(--bright-coral);
-    color: var(--soft-white);
-    border: none;
-    border-radius: 25px; /* More rounded for a modern look */
-    padding: 0.75rem 1.5rem;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-    position: relative;
-    overflow: hidden;
-}
-
-.call-to-action:hover {
-    background-color: #ff8787;
-    transform: translateY(-3px);
-}
-
 .call-to-action:before {
     content: '';
     position: absolute;
@@ -454,15 +356,13 @@
     background-color: #f9f9f9; /* Light background for even rows */
 }
 
-.comparison-header {
+.comparison-header, .comparison-data {
     padding: 1rem;
-    color: var(--deep-blue);
+    text-align: center;
 }
 
 .comparison-data {
-    padding: 1rem;
     color: var(--gray-tone);
-    text-align: center;
 }
 
 .comparison-data.highlight {
@@ -470,19 +370,48 @@
     font-weight: bold;
 }
 
-.toggle-comparison-button {
-    background-color: var(--bright-coral);
-    color: var(--soft-white);
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 20px;
-    font-size: 1rem;
-    cursor: pointer;
-    margin-top: 1rem;
-    transition: background-color 0.3s, transform 0.3s;
+/* Benefits Section */
+.benefits-wrapper {
+    padding: 4rem 2rem;
+    background-color: var(--soft-white);
+    color: var(--deep-blue);
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    height: auto;
 }
 
-.toggle-comparison-button:hover {
-    background-color: #ff8787;
-    transform: translateY(-3px);
+.section-title {
+    font-size: 3rem;
+    text-align: center;
+    color: var(--deep-blue);
+    font-weight: 700;
+    margin-bottom: 3rem;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Image and Text side-by-side */
+    gap: 2rem;
+    margin-bottom: 4rem;
+    align-items: center; /* Align items in the center */
+}
+
+.benefit-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.benefit-image {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 1rem;
+}
+
+.benefit-text {
+    font-size: 1.2rem;
+    color: var(--gray-tone);
 }
