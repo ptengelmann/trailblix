@@ -20,10 +20,10 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Configure logging
 logger = configure_logging()
-logger.info("About to connect to MongoDB")
 # Connect to MongoDB
 client = MongoClient('mongodb://mongo-dev-pod-host:27017/')
 db = client['user_management']
+logger.info(f"Connected to connect to MongoDB:{db}")
 
 @app.route('/api/login', methods=['POST'])
 def login():

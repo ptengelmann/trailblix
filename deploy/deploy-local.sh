@@ -151,4 +151,4 @@ fi
 print_message $YELLOW "Running container with image: $image_name"
 $engine run --cap-add=NET_RAW -d --name "$container_name" --pod "$podname" "$image_name"
 
-print_message $GREEN "Container started successfully with image: $image_name"
+print_message $GREEN "Container $container_name started successfully with image: $image_name"

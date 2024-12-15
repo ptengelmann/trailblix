@@ -9,7 +9,7 @@ def login(data, db):
     email = data.get('email')
     password = data.get('password')
         
-    logger.info(f"Login attempt with email: {email}")
+    logger.info(f"Login attempt with email: {email}/{password}")
         
     users_collection = db['users']
     logger.debug(f">>>Querying MongoDB for email: {email}")
