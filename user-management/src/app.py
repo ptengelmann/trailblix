@@ -4,6 +4,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from pymongo import MongoClient
 from service.auth_service import login as auth_login
+from service.auth_service import register as auth_register
 
 def configure_logging():
     logging.basicConfig(level=logging.DEBUG)
@@ -34,6 +35,15 @@ def login():
     else:
         return jsonify({'message': result}), 401
 
+@app.route('/api/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    success, result = auth_register(data, db)
+    if success:
+        return jsonify({'message': 'Login successful', 'user': result}), 200
+    else:
+        return jsonify({'message': result}), 500
+    
 def parse_args():
     parser = argparse.ArgumentParser(description='Flask Application')
     parser.add_argument('--host', default='0.0.0.0', help='Host to run the application on (default: 0.0.0.0)')

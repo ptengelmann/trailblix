@@ -70,7 +70,7 @@ build_image() {
 
 # Parse arguments
 engine="podman"
-image_name="node-deploy-container"
+image_name="node-deploy-dev"
 node_args=""
 dockerfile="../Dockerfile.dev"  # Default Dockerfile path
 

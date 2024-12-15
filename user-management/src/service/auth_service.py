@@ -22,3 +22,13 @@ def login(data, db):
     else:
         logger.warning(f"Invalid login attempt for email: {email} and collection user: {user}")
         return False, "Invalid credentials"
+    
+def register(data, db):
+    logger.debug(f"Registering user with data: {data}") 
+    try:
+        document = {'email' : data['email'], 'password' : data['password']}
+        db.insert_one(document)
+        return True, document
+    except Exception as e:
+        logger.warning(f"Register user did not succeed for email: {data['email']} and exception: {e}")
+        return False, "Unable to register"

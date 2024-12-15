@@ -7,7 +7,7 @@ hostname="trailblix-deploy-dev-host"
 memory="8G"
 network="marcos-net"
 ports=("3000:3000" "8443:8443")
-image_name="node-deploy-container"
+image_name="node-deploy-dev"
 container_name="node-ui-dev-app"
 
 # Construct the command line
